@@ -1,0 +1,40 @@
+Table Sucursal {
+  codigoSucursal int [primary key]
+  domicilioSucursal varchar
+  telefonoSucursal varchar
+}
+
+Table Fosa {
+  codigoSucursal int [ref: > Sucursal.codigoSucursal]
+  codigoFosa int
+  largoFosa float
+  anchoFosa float
+  primary key (codigoSucursal, codigoFosa)
+}
+
+Table Auto {
+  patenteAuto varchar [primary key]
+  marcaAuto varchar
+  modeloAuto varchar
+  dniCliente int [ref: > Cliente.dniCliente]
+}
+
+Table Cliente {
+  dniCliente int [primary key]
+  nombreCliente varchar
+  celularCliente varchar
+}
+
+Table Mecanico {
+  dniMecanico int [primary key]
+  nombreMecanico varchar
+  emailMecanico varchar
+}
+
+Table Trabajo {
+  codigoSucursal int [ref: > Sucursal.codigoSucursal]
+  codigoFosa int [ref: > Fosa.codigoFosa]
+  patenteAuto varchar [ref: > Auto.patenteAuto]
+  dniMecanico int [ref: > Mecanico.dniMecanico]
+  primary key (codigoSucursal, codigoFosa, patenteAuto, dniMecanico)
+}
