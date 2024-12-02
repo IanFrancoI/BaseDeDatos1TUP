@@ -1,0 +1,49 @@
+Enum "Usuarios_EstadoCuota_enum" {
+  "Paga"
+  "Impago"
+}
+
+Enum "Libros_Estado_enum" {
+  "Disponible"
+  "No disponible"
+}
+
+Table "Usuarios" {
+  "Id" INT [pk, increment]
+  "Nombre" VARCHAR(255) [not null]
+  "Direccion" VARCHAR(200)
+  "Telefono" VARCHAR(15) [not null]
+  "FechaRegistro" DATE [not null]
+  "EstadoCuota" Usuarios_EstadoCuota_enum [default: 'Impago']
+}
+
+Table "Libros" {
+  "Id" INT [pk, increment]
+  "Titulo" VARCHAR(200) [not null]
+  "Autor" VARCHAR(100) [not null]
+  "Anio" INT [not null]
+  "Categoria" VARCHAR(50)
+  "Estado" Libros_Estado_enum [default: 'Disponible']
+}
+
+Table "Prestamos" {
+  "Id" INT [pk, increment]
+  "UsuarioId" INT
+  "LibroId" INT
+  "FechaPrestamo" DATE [not null]
+  "FechaDevolucion" DATE
+  "Multa" DECIMAL(10,2) [default: 0]
+}
+
+Table "Pagos" {
+  "Id" INT [pk, increment]
+  "UsuarioId" INT
+  "FechaPago" DATE [not null]
+  "Monto" DECIMAL(10,2) [not null]
+}
+
+Ref:"Usuarios"."Id" < "Prestamos"."UsuarioId" [delete: cascade]
+
+Ref:"Libros"."Id" < "Prestamos"."LibroId" [delete: cascade]
+
+Ref:"Usuarios"."Id" < "Pagos"."UsuarioId" [delete: cascade]
